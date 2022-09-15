@@ -148,12 +148,17 @@ router.route("/process/login").post((request, response) => {
 // })
 
 //localhost:3000나 ip주소:3000으로 접속하면으로 접속하면 forward 방법으로 login.html 보여주기
-// router.route("/").get((request, response) => {
-//   console.log("접속 호출됨");
-//   response.sendFile(`${__dirname}/public/login.html`);
-// });
+router.route("/").get((request, response) => {
+  console.log("접속 호출됨");
+  response.sendFile(`${__dirname}/public/login.html`);
+});
 
-router.route('/process/addUser').post((request, response) => {
+router.route("/process/join").get((request, response) => {
+  console.log("접속 호출됨");
+  response.sendFile(`${__dirname}/public/addUser.html`);
+});
+
+router.route('/process/addUser').all((request, response) => {
 
   console.log('/process/addUser 호출됨');
   
