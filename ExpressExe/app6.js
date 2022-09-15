@@ -12,9 +12,8 @@ const multer = require("multer");
 
 //익스프레스 객체 생성
 const app = express();
-
 //env(환경변수) 외부에 노출되지 않아야 하는 정보를 모아놓는 곳
-app.set("port", process.env.PORT || 2000); //process.env.PORT에 PORT정보가 없으면 2000번으로 설정한다.
+app.set("port", process.env.PORT || 3000); //process.env.PORT에 PORT정보가 없으면 2000번으로 설정한다.
 //OR연산이므로 ||을 기준으로 왼쪽이 true면 오른쪽은 실행을 하지 않으므로 PORT에 정보가 있으면 설정된 PORT번호로 지정되고
 //왼쪽이 false면 오른쪽을 실행해서 2000을 포트번호로 사용한다.
 
@@ -28,7 +27,6 @@ app.use(express.json());
 app.use("/public", serveStatic(path.join(__dirname, "public"))); //상대경로 설정
 app.use("/upload", serveStatic(path.join(__dirname, "uploads"))); //상대경로 설정
 
-
 const encoding = (string) => {
   return Buffer.from(string, "latin1").toString("utf8");
 };
@@ -40,7 +38,7 @@ const storageMethod = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     const extension = path.extname(encoding(file.originalname)); //확장자
-    const basename =path.basename(encoding(file.originalname), extension); //파일 이름
+    const basename = path.basename(encoding(file.originalname), extension); //파일 이름
 
     callback(null, basename + extension); //abc.txt
     // callback(null, file.originalname); //abc.txt
@@ -52,7 +50,7 @@ const upload = multer({
   storage: storageMethod,
   limits: {
     file: 10,
-    fileSize: 1024 * 1024 * 1024,
+    fileSize: 1024 * 1024 * 1024 * 1024,
   },
 });
 

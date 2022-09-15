@@ -58,56 +58,51 @@ const connectDB = () => {
 
 //사용자 인증 함수
 const authUser = (database, id, pwd, callback) => {
-  
-  //users 컬렉션 참조
-  const users = database.collection('users');
+  //users 컬렉션 참조(스키마 읽음)
+  const users = database.collection("users");
 
   //id, pwd 로 검색
-  users.find({ "id": id, "password": pwd }).toArray((err, result) => {
+  users.find({ id: id, password: pwd }).toArray((err, result) => {
     if (err) {
       callback(err, null);
       return;
     }
-    
+
     if (result.length > 0) {
       callback(null, result);
+    } else {
+      console.log("일치하는 사용자가 없습니다.");
+      callback(null, null);
     }
-    else {
-      console.log('일치하는 사용자가 없습니다.');
-      callback(null, null)
-    }
-  })
-}
+  });
+};
 
 //사용자 추가 함수
 const addUser = (database, id, pwd, name, callback) => {
-  
   //users 컬렉션 참조
-  const users = database.collection('users')
+  const users = database.collection("users");
 
   //추가
-  users.insertMany([{"id":id, "password":pwd, "name":name}], (err, result) => {
-    
+  users.insertMany([{ id: id, password: pwd, name: name }], (err, result) => {
     if (err) {
       callback(err, null);
       return;
     }
 
     if (result.insertedCount > 0) {
-    console.log('사용자 추가됨: ' + result.insertedCount);
+      console.log("사용자 추가됨: " + result.insertedCount);
+    } else {
+      console.log("사용자 추가 실패");
     }
-    else {
-      console.log('사용자 추가 실패');
-    }
-    callback(null, result)
-  })
-}
+    callback(null, result);
+  });
+};
 
 //라우터 객체
 const router = express.Router();
 
-router.route('/process/login').post((request, response) => {
-  console.log('/process/login 호출됨');
+router.route("/process/login").post((request, response) => {
+  console.log("/process/login 호출됨");
   const id = request.body.id || request.query.id;
   const pwd = request.body.pwd || request.query.pwd;
 
@@ -118,41 +113,45 @@ router.route('/process/login').post((request, response) => {
       if (result) {
         const userName = result[0].name;
 
-        response.writeHead('200', {'Content-Type':'text/html;charset=utf-8'})
-        response.write('<h1>로그인 성공</h1>')
-        response.write('<div>사용자 아이디: ' + id + '</div>');
-        response.write('<div>사용자 이름: ' + userName + '</div>');
+        response.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
+        response.write("<h1>로그인 성공</h1>");
+        response.write("<div>사용자 아이디: " + id + "</div>");
+        response.write("<div>사용자 이름: " + userName + "</div>");
+        response.end("<br/><br/><a href='/public/login.html'>로그인</a>");
+      } else {
+        response.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
+        response.write("<h1>로그인 성공</h1>");
+        response.write("<div>아이디와 패스워드가 틀립니다.</div>");
         response.end("<br/><br/><a href='/public/login.html'>로그인</a>");
       }
-      else {
-        response.writeHead('200', {'Content-Type':'text/html;charset=utf-8'})
-        response.write('<h1>로그인 성공</h1>')
-        response.write('<div>아이디와 패스워드가 틀립니다.</div>');
-        response.end("<br/><br/><a href='/public/login.html'>로그인</a>");
-      }
-    })
-  }
-  else {
-    response.writeHead('200', {'Content-Type':'text/html;charset=utf-8'})
-    response.write('<h1>데이터베이스 연결 실패</h1>')
-    response.write('<div>데이터베이스에 연결하지 못했습니다.</div>');
+    });
+  } else {
+    response.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
+    response.write("<h1>데이터베이스 연결 실패</h1>");
+    response.write("<div>데이터베이스에 연결하지 못했습니다.</div>");
     response.end();
   }
-})
+});
 // router.route('/process/logout').get((request, response) => {
-  
+
 //   console.log("두두");
 //   response.redirect('/process/save')
 // })
 
 // router.route('/process/save').get((request, response) => {
-  
+
 //   //response.writeHead("200", { "Content-Type": "text/plain;charset=utf-8"});
 //   //response.end('하이\n바이');
 //   console.log('하이\n바이');
 //   response.send ('/public/login.html')
 
 // })
+
+//localhost:3000나 ip주소:3000으로 접속하면으로 접속하면 forward 방법으로 login.html 보여주기
+// router.route("/").get((request, response) => {
+//   console.log("접속 호출됨");
+//   response.sendFile(`${__dirname}/public/login.html`);
+// });
 
 router.route('/process/addUser').post((request, response) => {
 
