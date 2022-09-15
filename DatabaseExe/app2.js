@@ -74,7 +74,7 @@ const connectDB = () => {
     console.log('UserSchema 정의함');
 
     //스키마 컬렉션에 적용
-    UserModel = mongoose.model('users', UserSchema);
+    UserModel = mongoose.model('users4', UserSchema);
     console.log('UserModel 정의함');
   })
   database.on('error', console.error.bind(console, '몽구스 연결 에러.'));
@@ -103,7 +103,8 @@ const connectDB = () => {
     }
     else {
       console.log('일치하는 사용자가 없습니다.');
-      callback(null, null)
+      console.log("널" + result);
+      callback(null, result)
     }
   })
 }
@@ -127,7 +128,7 @@ const addUser = (id, pwd, name, callback) => {
     else {
       console.log('사용자 추가 실패');
     }
-
+    console.log("널" + result);
     callback(null, result)
 
   })
