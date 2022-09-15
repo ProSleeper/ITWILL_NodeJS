@@ -31,6 +31,12 @@ http.createServer(app).listen(app.get('port'),function(){
 	console.log('Express Server를 시작했습니다 : ' + app.get('port'));
 });
 
+//몽고디비 설치방법
+//1. 커뮤니티 버전 다운
+//2. 설치
+//3. 환경변수 path 설정 \bin 폴더
+//4. cmd 입력 mongod --dbpath D:\Node\shopping\database (경로는 원하는 곳에)
+
 /*.
 	1.
 	res.writeHead('200', { 'Content-Type': 'text/html;charset=utf-8' });
