@@ -4,11 +4,13 @@ const express = require("express");
 const http = require("http");
 const serveStatic = require("serve-static"); //특정 폴더 패스로 접근
 const path = require("path");
+const exp = require("constants");
 const expressErrorHandler = require("express-error-handler");
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 // const MongoClient = require('mongodb').MongoClient;
 const mongoose = require("mongoose"); //몽구스
+const crypto = require("crypto"); //암호화(pwd + salt key)
 
 //익스프레스 객체 생성
 const app = express();
@@ -62,28 +64,7 @@ const connectDB = () => {
   database.on("open", () => {
     console.log("데이터베이스에 연결 되었습니다." + databaseUrl);
 
-    //스키마 정의
-    UserSchema = mongoose.Schema({
-      id: { type: String, required: true, unique: true },
-      name: { type: String, index: "hashed" },
-      password: { type: String, required: true },
-      age: { type: Number, default: 20 },
-      created: { type: Date, index: { unique: false }, default: Date.now },
-    });
-    console.log("UserSchema 정의함");
-
-    //스키마 객체에 메소드를 추가(static(), method())
-    UserSchema.static("findById", function(id, callback) {
-      return this.find({ id: id }, callback);
-    });
-
-    UserSchema.static("findAll", function(callback) {
-      return this.find({}, callback);
-    });
-
-    //스키마 컬렉션에 적용
-    UserModel = mongoose.model("users2", UserSchema);
-    console.log("UserModel 정의함");
+    createUserSchema();
   });
   database.on("error", console.error.bind(console, "몽구스 연결 에러."));
 
@@ -94,6 +75,86 @@ const connectDB = () => {
       connectDB();
     }, 5000);
   });
+};
+
+const createUserSchema = () => {
+  //스키마 정의
+  UserSchema = mongoose.Schema({
+    id: { type: String, required: true, unique: true },
+    hashed_password: { type: String, required: true },  //암호화된 패스워드를 저장할 스키마
+    salt: {type:String, required:true},
+    name: { type: String, index: "hashed" },
+    age: { type: Number, default: 20 },
+    created: { type: Date, index: { unique: false }, default: Date.now },
+  });
+  console.log("UserSchema 정의함");
+
+  UserSchema
+  .virtual('password')
+  .set(function (password) {
+    this._password = password;
+    this.salt = this.makeSalt();
+    this.hashed_password = this.encryptPassword(password);
+    
+  })
+  .get(function () {
+    return this._password;
+  })
+
+  //salt값 생성
+  UserSchema.method('makeSalt', function() {
+
+    console.log('data: ' + new Date().valueOf());
+    console.log('math: ' + Math.random());
+    return (Math.round((new Date().valueOf() * Math.random())) + "");
+  })
+
+  //암호화 메소드
+  UserSchema.method('encryptPassword', function (inputPwd, inSalt) {
+    
+    if (inSalt) {
+      console.log("여기");
+      return crypto.createHmac('sha1', inSalt).update(inputPwd).digest('hex');
+    }
+    else {
+      return crypto.createHmac('sha1', this.salt).update(inputPwd).digest('hex');
+    }
+  })
+
+  //로그인할때 입력한 pwd와 저장되어있는 pwd를 비교
+  UserSchema.method('authenticate', function (inputPwd, inSalt, hashed_password) {
+    if (inSalt) {
+
+      //사용자가 입력한 pwd
+      console.log('사용자 입력 pwd: ' + inputPwd);
+      console.log('암호화된 pwd: ' + this.encryptoPassword(inputPwd, inSalt));
+      console.log('저장되어있는 pwd: ' + hashed_password);
+
+      return this.encryptoPassword(inputPwd, inSalt) == hashed_password;
+    }
+    else {
+        //사용자가 입력한 pwd
+        console.log('사용자 입력 pwd: ' + inputPwd);
+        console.log('암호화된 pwd: ' + this.encryptoPassword(inputPwd));
+        console.log('저장되어있는 pwd: ' + hashed_password);
+
+        return this.encryptoPassword(inputPwd) == this.hashed_password;
+    }
+    
+  })
+
+  //스키마 객체에 메소드를 추가(static(), method())
+  UserSchema.static("findById", function (id, callback) {
+    return this.find({ id: id }, callback);
+  });
+
+  UserSchema.static("findAll", function (callback) {
+    return this.find({}, callback);
+  });
+
+  //스키마 컬렉션에 적용
+  UserModel = mongoose.model("users3", UserSchema);
+  console.log("UserModel 정의함");
 };
 
 //사용자 인증 함수
@@ -108,7 +169,12 @@ const authUser = (id, pwd, callback) => {
     if (result.length > 0) {
       //아이디가 존재하면 result값이 있으므로 pwd 비교를 할 수 있다.
       console.log("아이디 일치");
-      if (result[0]._doc.password === pwd) {
+
+      const user = new UserModel({ id: id });
+      // const user = new UserModel({ id:id });
+      const authenticated = user.authenticate(pwd, result[0]._doc, salt, result[0]._doc.hashed_password);
+
+      if (authenticated) {
         console.log("패스워드 일치");
         callback(null, result);
       } else {
@@ -125,7 +191,7 @@ const authUser = (id, pwd, callback) => {
 //사용자 추가 함수
 const addUser = (id, pwd, name, callback) => {
   const user = UserModel({ id: id, password: pwd, name: name });
-
+  console.log("잘오나?");
   //추가
   user.save((err, result) => {
     if (err) {
@@ -255,7 +321,6 @@ router.route("/process/listUser").post((request, response) => {
         response.write("<br/><br/><a href='/public/listUser.html'>리스트</a>");
         response.write("<br/><br/><a href='/public/addUser.html'>회원가입</a>");
 
-
         response.end();
       } else {
         response.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
@@ -269,6 +334,16 @@ router.route("/process/listUser").post((request, response) => {
     response.write("<div>데이터베이스에 연결하지 못했습니다.</div>");
     response.end();
   }
+});
+
+router.route("/").get((request, response) => {
+  console.log("접속 호출됨");
+  response.sendFile(`${__dirname}/public/login.html`);
+});
+
+router.route("/process/join").get((request, response) => {
+  console.log("회원가입 호출됨");
+  response.sendFile(`${__dirname}/public/addUser.html`);
 });
 
 //라우터 객체 등록

@@ -4,7 +4,6 @@ const express = require("express");
 const http = require("http");
 const serveStatic = require("serve-static");  //특정 폴더 패스로 접근
 const path = require("path");
-const exp = require("constants");
 const expressErrorHandler = require("express-error-handler");
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
