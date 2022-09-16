@@ -38,38 +38,32 @@ Schema.createSchema = (mongoose) => {
   })
 
   //암호화 메소드
-  UserSchema.method('encryptoPassword', function (inputPwd, inSalt) {
-    
+  UserSchema.method("encryptoPassword", function (inputPwd, inSalt) {
     if (inSalt) {
-      console.log("여기");
-      return crypto.createHmac('sha1', inSalt).update(inputPwd).digest('hex');
+      return crypto.createHmac("sha1", inSalt).update(inputPwd).digest("hex");
+    } else {
+      return crypto.createHmac("sha1", this.salt).update(inputPwd).digest("hex");
     }
-    else {
-      return crypto.createHmac('sha1', this.salt).update(inputPwd).digest('hex');
-    }
-  })
+  });
 
   //로그인할때 입력한 pwd와 저장되어있는 pwd를 비교
-  UserSchema.method('authenticate', function (inputPwd, inSalt, hashed_password) {
+  UserSchema.method("authenticate", function (inputPwd, inSalt, hashed_password) {
     if (inSalt) {
-
       //사용자가 입력한 pwd
-      console.log('사용자 입력 pwd: ' + inputPwd);
-      console.log('암호화된 pwd: ' + this.encryptoPassword(inputPwd, inSalt));
-      console.log('저장되어있는 pwd: ' + hashed_password);
+      console.log("사용자 입력 pwd: " + inputPwd);
+      console.log("암호화된 pwd: " + this.encryptoPassword(inputPwd, inSalt));
+      console.log("저장되어있는 pwd: " + hashed_password);
 
       return this.encryptoPassword(inputPwd, inSalt) == hashed_password;
-    }
-    else {
-        //사용자가 입력한 pwd
-        console.log('사용자 입력 pwd: ' + inputPwd);
-        console.log('암호화된 pwd: ' + this.encryptoPassword(inputPwd));
-        console.log('저장되어있는 pwd: ' + hashed_password);
+    } else {
+      //사용자가 입력한 pwd
+      console.log("사용자 입력 pwd: " + inputPwd);
+      console.log("암호화된 pwd: " + this.encryptoPassword(inputPwd));
+      console.log("저장되어있는 pwd: " + hashed_password);
 
-        return this.encryptoPassword(inputPwd) == this.hashed_password;
+      return this.encryptoPassword(inputPwd) == this.hashed_password;
     }
-    
-  })
+  });
 
   //스키마 객체에 메소드를 추가(static(), method())
   UserSchema.static("findById", function (id, callback) {
@@ -79,7 +73,6 @@ Schema.createSchema = (mongoose) => {
   UserSchema.static("findAll", function (callback) {
     return this.find({}, callback);
   });
-
 
   return UserSchema;
 };

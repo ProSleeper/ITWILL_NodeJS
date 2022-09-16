@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 // const MongoClient = require('mongodb').MongoClient;
 const mongoose = require("mongoose"); //몽구스
-const user = require('./router/user');
+const user = require("./router/user_for_app1");
 
 
 //익스프레스 객체 생성

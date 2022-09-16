@@ -26,7 +26,7 @@ const initRouters = (app, router) => {
     }
     else if (curItem.type == 'post') {
       console.log('로그인2');
-      router.route(curItem.path).post(curModule[curItem.method]);
+      router.route(curItem.path).post(curModule[curItem.method] /* <-- 콜백함수임. */);
     }
     else {
       console.log('로그인3');

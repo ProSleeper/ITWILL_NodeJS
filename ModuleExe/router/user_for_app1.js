@@ -1,27 +1,24 @@
-// //데이터베이스 객체, 스키마 객체, 모델 객체
-// let database;
-// let UserSchema;
-// let UserModel;
+//데이터베이스 객체, 스키마 객체, 모델 객체
+let database;
+let UserSchema;
+let UserModel;
 
-// const init = (db, schema, model) => {
-//   console.log('init 호출됨');
+const init = (db, schema, model) => {
+  console.log("init 호출됨");
 
-//   database = db;
-//   UserSchema = schema;
-//   UserModel = model;
-// }
+  database = db;
+  UserSchema = schema;
+  UserModel = model;
+};
 
 const login = (request, response) => {
   console.log("/process/login 호출됨");
   const id = request.body.id || request.query.id;
   const pwd = request.body.pwd || request.query.pwd;
 
-  const database = request.app.get("database");
-  console.log("유저1");
   if (database) {
     authUser(database, id, pwd, (err, result) => {
       if (err) throw err;
-      console.log("유저1");
       if (result) {
         const userName = result[0].name;
         // console.log(userName);
@@ -54,8 +51,6 @@ const addUsers = (request, response) => {
   const pwd = request.body.pwd;
   const name = request.body.name;
 
-  const database = request.app.get("database");
-
   if (database) {
     addUser(database, id, pwd, name, (err, result) => {
       if (err) throw err;
@@ -83,12 +78,8 @@ const addUsers = (request, response) => {
 const listUser = (request, response) => {
   console.log("/process/listUser 호출됨");
 
-  //request.app.get 이거는 도대체 어떻게 온거지?
-  //app.get은 database에서 넣어줘서 가능한건 알겠는데, request.app을 할 수 있는 이유가 뭐지?
-  const database = request.app.get("database");
-
   if (database) {
-    database.UserModel.findAll((err, result) => {
+    UserModel.findAll((err, result) => {
       if (err) {
         response.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
         response.write("<h2>사용자 리스트 조회 중 에러 뿜뿜</h2>");
@@ -132,18 +123,17 @@ const listUser = (request, response) => {
 
 //사용자 인증 함수
 const authUser = (database, id, pwd, callback) => {
-  console.log("유저로그인");
   //id, pwd 로 검색
-  database.UserModel.findById(id, (err, result) => {
+  UserModel.findById(id, (err, result) => {
     if (err) {
       callback(err, null);
       return;
     }
+
     if (result.length > 0) {
       //아이디가 존재하면 result값이 있으므로 pwd 비교를 할 수 있다.
       console.log("아이디 일치");
-      const user = new database.UserModel({ id: id });
-      // const user = new UserModel({ id:id });
+      const user = new UserModel({ id: id });
       const authenticated = user.authenticate(pwd, result[0]._doc.salt, result[0]._doc.hashed_password);
 
       if (authenticated) {
@@ -162,8 +152,8 @@ const authUser = (database, id, pwd, callback) => {
 
 //사용자 추가 함수
 const addUser = (database, id, pwd, name, callback) => {
-  console.log('회원가입');
-  const user = database.UserModel({ id: id, password: pwd, name: name });
+  console.log("회원가입");
+  const user = UserModel({ id: id, password: pwd, name: name });
   //추가
   user.save((err, result) => {
     if (err) {
@@ -184,4 +174,4 @@ const addUser = (database, id, pwd, name, callback) => {
 module.exports.login = login;
 module.exports.addUser = addUsers;
 module.exports.listUser = listUser;
-// module.exports.init = init;
+module.exports.init = init;
