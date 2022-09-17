@@ -129,3 +129,6 @@ dist
 
 # mongodb
 /shopping/
+
+# 파일 다운로드 구현시 테스트 폴더
+/ExpressExe/uploads/

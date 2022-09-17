@@ -124,6 +124,11 @@ router.route("/process/file").post(upload.array("upload", 2), (request, response
   }
 });
 
+router.route("/").get((request, response) => {
+  response.sendFile(__dirname + "/public/file.html");
+});
+
+
 app.use("/", router);
 
 const errorHandler = expressErrorHandler({
