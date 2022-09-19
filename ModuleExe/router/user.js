@@ -77,7 +77,7 @@ const addUsers = (request, response) => {
             response.end();
             return;
           }
-          console.log("rendered: " + html);
+          //console.log("rendered: " + html);
           response.end(html);
         })
       } else {

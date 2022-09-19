@@ -23,6 +23,8 @@ const app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 console.log('뷰 엔진이 ejs로 설정되었습니다.');
+// app.set('view engine', 'jade');
+// console.log('뷰 엔진이 jade로 설정되었습니다.');
 
 
 //env(환경변수) 외부에 노출되지 않아야 하는 정보를 모아놓는 곳

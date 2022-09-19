@@ -22,5 +22,9 @@ module.exports = {
       {
         file:'./user', path:'/process/listUser', method:'listUser', type:'post'
       },
+
+      {
+        file:'./jadeTest', path:'/process/test', method:'testJade', type:'post'
+      },
     ]
 };
