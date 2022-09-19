@@ -19,6 +19,12 @@ const routerLoader = require('./router/routerLoader')
 //익스프레스 객체 생성
 const app = express();
 
+//템플릿 뷰 엔진 설정
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+console.log('뷰 엔진이 ejs로 설정되었습니다.');
+
+
 //env(환경변수) 외부에 노출되지 않아야 하는 정보를 모아놓는 곳
 app.set("port", process.env.PORT || config.serverPort); //process.env.PORT에 PORT정보가 없으면 2000번으로 설정한다.
 //OR연산이므로 ||을 기준으로 왼쪽이 true면 오른쪽은 실행을 하지 않으므로 PORT에 정보가 있으면 설정된 PORT번호로 지정되고
@@ -31,7 +37,7 @@ app.use(express.urlencoded({ extended: false })); //false로 하면 html파일�
 //json 데이터 파싱
 app.use(express.json());
 //path.join(__dirname, 'public') << 크롤링 코드에 적용하자 path부분
-app.use("/public", serveStatic(path.join(__dirname, "public"))); //상대경로 설정
+app.use("/public1", serveStatic(path.join(__dirname, "public1"))); //상대경로 설정
 //앞의 /public은 가상의 주소 뒤의 /public 은 실제 주소
 
 //쿠키 미들웨어
@@ -67,7 +73,7 @@ routerLoader.init(app, express.Router());
 
 const errorHandler = expressErrorHandler({
   static: {
-    404: "./public/404.html",
+    404: "./public1/404.html",
   },
 });
 
@@ -81,7 +87,16 @@ app.use(errorHandler);
 // })
 
 //Express 서버 시작
-http.createServer(app).listen(app.get("port"), () => {
+const host = '192.168.16.6';
+http.createServer(app).listen(app.get("port"), host, () => {
   console.log("익스프레스 서버를 시작했습니다: " + app.get("port"));
   database.init(app, config);
 });
+
+
+
+
+
+
+
+

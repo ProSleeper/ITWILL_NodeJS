@@ -14,7 +14,7 @@ module.exports = {
   routeInfo:
     [
       {
-        file:'./user', path:'/process/login', method:'login', type:'get'
+        file:'./user', path:'/process/login', method:'login', type:'post'
       },
       {
         file:'./user', path:'/process/addUser', method:'addUser', type:'post'

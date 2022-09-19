@@ -17,19 +17,15 @@ const initRouters = (app, router) => {
     
     const curItem = element;
     const curModule = require(curItem.file); 
-    console.log(curItem);
     //console.log(curItem.method);
     //console.log(curModule[curItem.method]);
     if (curItem.type == 'get') {
-      console.log('로그1');
       router.route(curItem.path).get(curModule[curItem.method]);
     }
     else if (curItem.type == 'post') {
-      console.log('로그인2');
       router.route(curItem.path).post(curModule[curItem.method] /* <-- 콜백함수임. */);
     }
     else {
-      console.log('로그인3');
       router.route(curItem.path).post(curModule[curItem.method]);
     }
   })

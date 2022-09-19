@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height initial-scale=1.0">
+  <title>사용자 리스트 목록</title>
+  <link rel="stylesheet" type="text/css" href="../public1/data/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="../public1/data/listUserResp.css">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="../public1/data/semantic.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="ui raised segment">
+      <a class="ui blue ribbon label">사용자 리스트(View - ejs)</a>
+      <br /><br />
+
+      <!-- 세로모양 카드 -->
+      <div class="ui two column grid">
+        <% for (let i = 0; i < result.length; i++) { %>
+        <div class="column">
+          <div class="ui card">
+            <div class="image">
+              <img src="../public1/image/suzi.png" alt="수지사진">
+            </div>
+
+            <div class="content">
+              <a class="header"><%=result[i]._doc.name %></a>
+              <div class="meta">
+                <span class="date">
+                  <%=moment(result[i]._doc.created).format('YYYY년 MM월 DD일') %>
+                </span>
+              </div>
+              <div class="description">
+                <br />
+                <p>신장: 169:cm</p>
+                <%=result[i]._doc.age %>
+              </div>
+            </div>
+            <div class="extra content">
+              22 Friends
+            </div>
+          </div>
+        </div>
+        <%} %>
+      </div>
+
+
+    </div>
+
+    
+  </div>
+
+</body>
+
+</html>
+
+
+
