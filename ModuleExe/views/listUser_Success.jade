@@ -1,0 +1,24 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width,height=device-height initial-scale=1.0')
+    title 사용자 리스트 페이지
+  body
+    h1 사용자 리스트(View - jade)
+    div
+      ul
+        - for (let index=0; index < result.length; index++) {
+        - var curId = result[index]._doc.id;
+        - var curName = result[index]._doc.name;
+        - var curAge = result[index]._doc.age;
+        li #{index + 1} -
+          아이디: #{curId},
+          이름: #{curName},
+          나이: #{curAge}
+        - }
+    
+    br
+    br
+    a(href='/public1/listUser.html') 다시 요청
