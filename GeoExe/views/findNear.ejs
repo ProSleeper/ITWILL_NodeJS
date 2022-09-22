@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>구글맵</title>
+
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,body {
+      width: 100%;
+      height: 100%;
+    }
+
+    #map {
+      width: 100%;
+      height: 95%;
+    }
+  </style>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBR9gyctkuoytyi_6GE2vuXPAoA29HscWk">
+  </script>
+
+  <script type="text/javascript">
+    function onLoad() {
+      initMap();
+    }
+
+  // {lat: 37.500613, lng: 127.036430};  //역삼역
+	// {lat: 37.498856, lng: 127.031808};  //ITWILL
+	// {lat: 37.498109, lng: 127.028785};  //강남역 
+	// {lat: 37.508844, lng: 127.063134};  //삼성역
+
+    let map;
+    const myLocation = {lng:<%=longitude%>, lat:<%=latitude%> };
+    const coffeeLocation = { lng:<%=result.geometry.coordinates[0]%>, lat:<%=result.geometry.coordinates[1]%>};
+
+    function initMap() {
+      
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: myLocation,
+        zoom: 17, // 1-22 까지 존재 (지도 확대 축소)
+      });
+
+      const myMarker = new google.maps.Marker({
+        position: myLocation,
+        icon: '../public/image/mylocation.png',
+        //animation: google.maps.Animation.BOUNCE,
+        title: 'ITWILL!'
+      });
+
+      myMarker.setMap(map);
+
+
+      //스타벅스 마커
+      const coffeeMarker = new google.maps.Marker({
+        position: coffeeLocation,
+        icon: '../public/image/coffee.png',
+        //animation: google.maps.Animation.BOUNCE,
+        title: 'ITWILL!'
+      });
+
+      coffeeMarker.setMap(map);
+    }
+
+  </script>
+
+</head>
+
+<body onload="onLoad();">
+  <p>구글맵으로 내 위치 표시하기</p>
+  <div id="map"></div>
+
+
+</body>
+
+</html>

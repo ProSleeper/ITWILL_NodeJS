@@ -23,6 +23,18 @@ module.exports = {
       {
         file:'./coffeeShop', path:'/process/listCoffeeShop', method:'list', type:'post'
       },
+      {
+        file:'./coffeeShop', path:'/process/nearCoffeeShop', method:'findNear', type:'post'
+      },
+      {
+        file:'./coffeeShop', path:'/process/nearCoffeeShop2', method:'findNear2', type:'post'
+      },
+      {
+        file:'./coffeeShop', path:'/process/withinCoffeeShop', method:'findWithin', type:'post'
+      },
+      {
+        file:'./coffeeShop', path:'/process/circleCoffeeShop', method:'findCircle', type:'post'
+      },
     ]
 };
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+  <title>가까운 스타벅스 찾기 테스트</title>
+</head>
+<body>
+  
+<h1>가까운 스타벅스 찾기</h1>
+
+
+<!-- 
+  GPS 거리 계산 방법
+  경도 * 100000.0 * 1.110 의 1의 자리가 1m
+  위도 * 100000.0 * 0.084 의 1의 자리가 1m
+
+  127.0316 * 100000.0 * 1.110 = 
+  37.4989 * 100000.0 * 0.084 = 
+
+  127.031633 * 100000.0 * 1.110 = 
+  37.499726 * 100000.0 * 0.084 = 
+
+
+
+
+ -->
+
+
+
+<br>
+<form action="/process/nearCoffeeShop" method="post">
+<table>
+  <tr>
+    <td><label for="">경도</label></td>
+    <td><input type="text" name="longitude" value="127.0316"></td>
+  </tr>
+  <tr>
+    <td><label for="">위도</label></td>
+    <td><input type="text" name="latitude" value="37.4989"></td>
+  </tr>
+</table>
+<input type="submit" value="찾기">
+</form>
+
+<a href="/public/listCoffeeShop.html">전체보기</a>
+<a href="/public/nearCoffeeShop.html">가까운 매장 찾기</a>
+
+
+
+
+</body>
+</html>
