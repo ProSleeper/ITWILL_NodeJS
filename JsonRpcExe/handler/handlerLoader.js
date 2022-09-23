@@ -68,11 +68,11 @@ function initHandlers(jayson, app, apiPath) {
         const res = err || success;
         
         //console.log(err);
-        console.log(success);
+        //console.log(success);
 
         //console.log(response.body);
-        console.log("앱앱");
-        console.log(res)
+        //console.log("앱앱");
+        //console.log(res)
 
 
 

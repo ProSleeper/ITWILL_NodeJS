@@ -8,6 +8,15 @@ const handlerInfo =
   [
     {
       file:'./echo', method:'echo'
+    },
+    {
+      file:'./echo_error', method:'echo_error'
+    },
+    {
+      file:'./add', method:'add'
+    },
+    {
+      file:'./echoEncrypt', method:'echo_encrypt'
     }
   ]
   

@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "crypto": "^1.0.1",
-    "save": "^2.5.0"
-  }
-}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>글 조회 페이지</title>
+  <link rel="stylesheet" href="../public/data/semantic.min.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="./data/semantic.min.js"></script>
+  <script type="text/javascript" src="../public/cleditor/jquery.cleditor.min.js"></script>
+  <style type="text/css">
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+      color: #000;
+      background-color: #fff;
+    }
+
+    .container {
+      margin-right: auto;
+      margin-left: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    span {
+      color: #999;
+    }
+
+    #titleOutPut {
+      margin-bottom: 10px;
+      line-height: 1.2em;  
+    }
+
+    #contentsOutPut {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      line-height: 1.8em;  
+    }
+
+    #board_title {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: teal;
+    }
+  </style>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    const output = $('#contentsOutPut').text();
+
+    $('#contentsOutPut').html(output);
+
+
+  });
+</script>
+
+
+
+</head>
+
+<body>
+
+  <div class="container">
+    <br />
+    <div class="ui raised segment">
+      <a class="ui blue ribbon label">게시판</a>
+      <span id="board_title"><%=title %> </span>
+
+      <div class="ui blue fluid card">
+        <div class="content">
+          <div id="titleOutput" class="header"><%=result._doc.title  %> </div>
+          <div class="meta">
+            <span class="right floated time">1일전</span>
+            <span class="category">일반</span>
+          </div>
+          <div id="contentsOutput" class="description">
+            <%=result._doc.contents  %> 
+          </div>
+        </div>
+
+        <div class="extra content">
+          <div class="right floated author">
+            <img src="../public/image/author.png" alt="" class="ui avatar image">
+            <%=result._doc.writer.email %> 
+          </div>
+        </div>
+
+      </div>
+
+      <br><br>
+      <a href="/process/listboard?page=0&perPage=5" class="ui button">글 목록</a>
+      <a href="../public/addBoard.html" class="ui button">글 쓰기</a>
+
+    </div>
+    
+  
+  </div>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+  <title>JSON-RPC ECHO</title>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="./data/jquery.jsonrpc.js"></script>
+
+<script  type="text/javascript">
+
+  $(function () {
+    
+    $.jsonRPC.setup({
+      endPoint: 'http://192.168.16.6:3000/api',
+      namespace: ''
+    });
+
+    $('#requestBtn').click(function () {
+
+      const num1 = parseInt($('#num1').val());
+      const num2 = parseInt($('#num2').val());
+
+
+
+
+      const message = $('#msg').val();
+
+      const method = 'add';
+
+      //서버에 요청
+      $.jsonRPC.request(method, {
+        //전달할 데이터
+        //id: 요청id(응답을 구분)
+        //params: 서버로 보낼 데이터
+        //success: 성공했을 때
+        //error: 실패 했을 때
+
+        id: 1001,
+        params:[num1, num2],
+        success:function(data) {
+          //data 내용
+          //id: 요청할때 보낸 값
+          //jsonrpc: 버전
+          //result: 배열로 된 응답 데이터
+
+          printMsg('정상 응답을 받았습니다.')
+          //console.log(data);
+          printMsg(data.result);
+        },
+        error:function(data){
+          printMsg('에러를 받았습니다.')
+          console.log("에러러러렁");
+          console.log(data);
+          printMsg(data.result);
+        }
+      });
+
+      //비동기 방식이라 화면에 먼저 출력
+      printMsg(`[${method}]method로 요청을 보냈습니다.`);
+      
+    });
+
+  })
+  function printMsg(data) {
+    $('#result').append('<p>' + data + '</p>');
+  }
+
+</script>
+
+</head>
+<body>
+
+<h3>JSON-RPC Add 테스트</h3>
+<br>
+<input type="text" id="num1">
++
+<input type="text" id="num2">
+<br>
+<input type="button" value="더하기" id="requestBtn"/>
+<p>결과</p>
+<div id="result"></div>
+
+
+
+</body>
+</html>
