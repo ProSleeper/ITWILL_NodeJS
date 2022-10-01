@@ -2,7 +2,7 @@
 Web Socket: 웹 서버로 소켓을 연결한 후 데이터를 주고 받은 수 있도록 만든 HTML5 표준이다.
 웹 브라우저가 이 기능을 지원하지 않아도 Web Socket을 사용할 수 있도록 만든 것이 Socket.io 모듈
 
-cors모듈: Ajax의 XMLHttpRequest는 보안 문제를 이유로 웹 서비스를 지원하는 서버외에는
+모듈: Ajax의 XMLHttpRequest는 보안 문제를 이유로 웹 서비스를 지원하는 서버외에는
 다른 서버에서 접속할 수가 없는데 cors(cross origin resource sharing)을 사용하면 제약이 풀림
 sop(single oringin policy) 제약을 허용하기 위해서 cors를 사용해서 다른 url간의 자원공유가 가능하다.
 */

@@ -72,9 +72,7 @@ const addUsers = (request, response) => {
 
       if (result) {
         const context = { title: '사용자 추가 성공(View - jade)' };
-        // request.app.render('addUser', context, (err, html) => {
-        request.app.render('addUser_Success', context, (err, html) => {
-        
+        request.app.render("addUser", context, (err, html) => {
           if (err) {
             response.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
             response.write("<h2>뷰 렌더링 중 에러발생</h2>");
@@ -83,7 +81,7 @@ const addUsers = (request, response) => {
           }
           //console.log("rendered: " + html);
           response.end(html);
-        })
+        });
       } else {
         response.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
         response.write('<meta name="viewport" content="width = device - width, height = device - height, initial - scale=1.0">');
