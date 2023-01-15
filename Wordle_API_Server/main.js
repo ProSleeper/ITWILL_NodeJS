@@ -17,9 +17,6 @@ const routerLoader = require("./router/routerLoader");
 const cors = require("cors");
 
 const app = express();
-app.set("views", __dirname + "/views");
-app.set("view engine", "ejs");
-console.log("뷰 엔진이 ejs로 설정되었습니다.");
 
 app.set("port", process.env.PORT || config.serverPort);
 
