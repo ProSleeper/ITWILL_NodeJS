@@ -5,7 +5,7 @@
 const fs = require("fs");
 const ffmpeg = require("ffmpeg");
 
-const fn = "./" + "빈차 (Home Is Far Away) ft OH HYUK.mp4";
+const fn = __dirname + "\\" + "의류수거함.mp4";
 const tempFn = "./curfile.mp4";
 fs.renameSync(fn, tempFn);
 
