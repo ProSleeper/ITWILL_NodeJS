@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "ffmpeg": "^0.0.4",
-    "fluent-ffmpeg": "^2.1.2"
+    "youtube-dl-exec": "^2.4.1",
+    "yt-converter": "^1.1.0",
+    "ytpl": "^2.3.0"
   }
 }
